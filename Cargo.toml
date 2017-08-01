@@ -6,3 +6,4 @@ authors = ["Shawn Zhang <shawnzhang@lionfin.com.hk>"]
 [dependencies]
 time = "0.1.38"
 iron = "0.5.*"
+rand = "0.3"
