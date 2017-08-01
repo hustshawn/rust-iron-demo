@@ -37,17 +37,54 @@
 //     Iron::new(chain).http("localhost:8088").unwrap();
 // }
 
-
+// main.rs
 extern crate iron;
+extern crate rand;
+extern crate rustc_serialize;
 
 use iron::prelude::*;
 use iron::status;
 use iron::mime::Mime;
+use rand::Rng;              // use random number generator
+use rustc_serialize::json;
+
+
+#[derive(RustcEncodable)]
+struct JsonResponse {
+    response: String
+}
+// pick a string at random
+fn pick_resposne() -> String {
+
+    // generate a number between 1 to 3
+    let num = rand::thread_rng().gen_range(1, 4);
+
+    // match the random number and pick a random string
+    let response = match num {
+        1 =>    "Hello World!",
+        2 =>    "Did you see that ludicrous display last night?",
+        3 =>    "Nice weather for ducks",
+        _ =>    ""
+    };
+
+    // return the string
+    response.to_string()
+}
 
 fn main() {
+
+    // check it's working - this will appear in your terminal
+    println!("{:?}", pick_resposne());
+
     Iron::new(|_: &mut Request| {
         let content_type = "application/json".parse::<Mime>().unwrap();
 
-        Ok(Response::with((content_type, status::Ok, "{\"response\": \"Hello world!\"}")))
+        // create the response
+        let response = JsonResponse { response: pick_resposne() };
+
+        // convert the response struct to JSON
+        let out = json::encode(&response).unwrap();
+
+        Ok(Response::with((content_type, status::Ok, out)))
     }).http("localhost:8088").unwrap();
 }

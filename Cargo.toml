@@ -7,3 +7,5 @@ authors = ["Shawn Zhang <shawnzhang@lionfin.com.hk>"]
 time = "0.1.38"
 iron = "0.5.*"
 rand = "0.3"
+router = "*"
+rustc-serialize = "0.3"
